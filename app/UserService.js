@@ -9,6 +9,9 @@ class UserService {
         return this.userRepo.getUsers();
     }
 
+    // Note: This is the basic idea but I've screwed up one important thing
+    //       we want to avoid side effects in our code. modifying the from and
+    //       to users directly is not ideal.
     makePayment(fromUser, toUser, amount) {
         if(amount <= 0) return [false, "invalid amount"];
 
