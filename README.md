@@ -24,8 +24,8 @@ Run tests with:
 
 
 These are the concepts I'm following for this idea, although not perfectly:
-	* [boundaries](https://www.destroyallsoftware.com/talks/boundaries)
-	* [Hexagonal Arch - Alistair Cockburn](https://web.archive.org/web/20180822100852/http://alistair.cockburn.us/Hexagonal+architecture)
-	* [Hexagonal Arch - Ian Cooper](https://www.youtube.com/watch?v=FJUevNLEtuU)
+* [boundaries](https://www.destroyallsoftware.com/talks/boundaries)
+* [Hexagonal Arch - Alistair Cockburn](https://web.archive.org/web/20180822100852/http://alistair.cockburn.us/Hexagonal+architecture)
+* [Hexagonal Arch - Ian Cooper](https://www.youtube.com/watch?v=FJUevNLEtuU)
 
 
