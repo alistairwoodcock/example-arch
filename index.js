@@ -25,7 +25,6 @@ const UserService = require("./app/UserService");
     httpInfra = new HttpInfra(
         port, 
         appEvents,
-        userService,
     );
 
     httpInfra.run();
