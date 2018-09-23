@@ -30,8 +30,6 @@ const UserDetails = require("./app/UserDetails");
         {id: 3, name: "Test3", balance: 33},
     ]);
 
-    const paymentService = new PaymentService(/*config etc.. passed in here*/);
-
     const userDetails = new UserDetails(userRepo);
     userDetails.setupCommandHandlers(appEvents);
 
