@@ -29,26 +29,18 @@ class HttpInfra {
             let toUser = req.body.to;
             let amount = req.body.amount;
 
-            console.log(req.body);
-
-            this.appEvents.command('USER_PAYMENT', {
+            let result = this.appEvents.command('TRANSFER_MONEY', {
                 fromUserId: fromUser,
                 toUserId: toUser,
                 amount,
             });
 
-           res.send("payment processing.");
+           res.json(result);
         });
 
         express.get('/users', (req, res) => {
 
-            let users = this.appEvents.query('USERS');
-
-            users = users.map(user => ({
-                id: user.id,
-                name: user.name,
-                balance: user.balance
-            }));
+            let users = this.appEvents.query('GET_USERS_LIST');
 
             res.json(users);
         });

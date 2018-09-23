@@ -15,7 +15,24 @@ class UserRepo {
     } 
 
     saveUser(user) {
-        // nothing to do here because we've got no real DB
+        this.users = this.users.map(u => {
+            if(user.id !== u.id) return u;
+            return user;
+        });
+    }
+
+    createUser(name, balance) {
+        let found = this.users.find(u => u.name === name);
+
+        if(found) return false;
+
+        this.users.push({
+            id: this.users.length,
+            name,
+            balance,
+        });
+
+        return true;
     }
 
 }

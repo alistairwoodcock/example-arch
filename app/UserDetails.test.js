@@ -14,6 +14,20 @@ class MockUserRepo {
     getUsers() {
         return this.users;
     }
+
+    createUser(name, balance) {
+        let found = this.users.find(u => u.name === name);
+
+        if(found) return false;
+
+        this.users.push({
+            id: this.users.length,
+            name,
+            balance,
+        });
+
+        return true;
+    }
 }
 
 describe("User Payments", () => {
@@ -29,5 +43,11 @@ describe("User Payments", () => {
     
     test("Gets all users", () => {
         expect(userDetails.getUsers()).toEqual(repo.users);
+    })
+
+    test("Cannot create user with duplicate name", () => {
+        let {success, reason} = userDetails.createUser("A",1);
+
+        expect(success).toEqual(false);
     })
 });

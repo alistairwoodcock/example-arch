@@ -1,1 +1,4 @@
 node_modules/
+.idea/
+replay_events.json
+events.json

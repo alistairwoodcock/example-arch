@@ -1,18 +1,26 @@
 const HttpInfra = require("./infra/http");
 const AppEvents = require("./infra/AppEvents");
+const EventStore = require("./infra/EventStore");
 
 const UserRepo = require("./infra/UserRepo");
-const ConsumerPayments = require("./app/ConsumerPayments");
-const PaymentService = require("./infra/PaymentService");
+const UserPayments = require("./app/UserPayments");
 
 const UserDetails = require("./app/UserDetails");
 
 
+
 (() => {
+
+    const config = {
+        run: true,
+        replay: false,
+    };
 
     const port = 3000; // TODO: Pull from config
 
-    const appEvents = new AppEvents();
+    const eventStore = new EventStore("./events.json");
+
+    const appEvents = new AppEvents(eventStore);
 
     // TODO: Real DB
     userRepo = new UserRepo([
@@ -27,14 +35,36 @@ const UserDetails = require("./app/UserDetails");
     const userDetails = new UserDetails(userRepo);
     userDetails.setupCommandHandlers(appEvents);
 
-    const consumerPayments = new ConsumerPayments(userRepo, paymentService);
-    consumerPayments.setupCommandHandlers(appEvents);
+    const userPayments = new UserPayments(userRepo);
+    userPayments.setupCommandHandlers(appEvents);
 
-    httpInfra = new HttpInfra(
-        port, 
-        appEvents,
-    );
+    if(config.run) 
+    {
+        httpInfra = new HttpInfra(
+            port, 
+            appEvents,
+        );
 
-    httpInfra.run();
+        httpInfra.run();    
+    }
+    else if (config.replay)
+    {
 
+        let events = require("./replay_events.json");
+
+        for(let i = 0; i < events.length; i++) {
+            let event = events[i];
+
+            let result;
+
+            switch(event.type) {
+                case 'QUERY': result = appEvents.query(event.name, event.data); break;
+                case 'COMMAND': result = appEvents.command(event.name, event.data); break;
+            }
+
+            console.log("result: ", result);
+        }
+
+        console.log("Finished replaying events");
+    }
 })();
