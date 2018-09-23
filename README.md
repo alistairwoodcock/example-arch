@@ -1,4 +1,4 @@
-### Exploring Event Arch
+### Exploring Hex/Event Arch
 
 #### Structure
     index -- setup application and infrastructure
