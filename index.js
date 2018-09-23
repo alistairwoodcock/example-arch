@@ -2,7 +2,10 @@ const HttpInfra = require("./infra/http");
 const AppEvents = require("./infra/AppEvents");
 
 const UserRepo = require("./infra/UserRepo");
-const UserService = require("./app/UserService");
+const ConsumerPayments = require("./app/ConsumerPayments");
+const PaymentService = require("./infra/PaymentService");
+
+const UserDetails = require("./app/UserDetails");
 
 
 (() => {
@@ -19,8 +22,13 @@ const UserService = require("./app/UserService");
         {id: 3, name: "Test3", balance: 33},
     ]);
 
-    const userService = new UserService(userRepo);
-    userService.setupHandlers(appEvents);
+    const paymentService = new PaymentService(/*config etc.. passed in here*/);
+
+    const userDetails = new UserDetails(userRepo);
+    userDetails.setupCommandHandlers(appEvents);
+
+    const consumerPayments = new ConsumerPayments(userRepo, paymentService);
+    consumerPayments.setupCommandHandlers(appEvents);
 
     httpInfra = new HttpInfra(
         port, 

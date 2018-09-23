@@ -1,17 +1,15 @@
 
-class UserService {
+class ConsumerPayments {
     
     constructor(userRepo) {
         this.userRepo = userRepo;
     }
 
-    getUsers() {
-        return this.userRepo.getUsers();
-    }
-
     // Note: This is the basic idea but I've screwed up one important thing
     //       we want to avoid side effects in our code. modifying the from and
     //       to users directly is not ideal.
+
+    // TODO: Rip out this return structure
     makePayment(fromUser, toUser, amount) {
         if(amount <= 0) return [false, "invalid amount"];
 
@@ -29,15 +27,11 @@ class UserService {
         return [true, ""];
     }
 
-    setupHandlers(handler) {
+    // These command handlers can accept or reject the commands
+    setupCommandHandlers(handler) {
 
-        handler.onQuery('USERS', (query) => {
-            const users = this.getUsers();
 
-            return users;
-        })
-
-        handler.onCommand('USER_PAYMENT', (command) => {
+        handler.on('USER_PAYMENT', (command) => {
             
             let fromUser = this.userRepo.getUserById(command.fromUserId);
             let toUser = this.userRepo.getUserById(command.toUserId);
@@ -58,7 +52,7 @@ class UserService {
             }
         });
 
-        handler.onCommand('USER_PAYMENT_SUCCESS', (command) => {
+        handler.on('USER_PAYMENT_SUCCESS', (command) => {
 
             // TODO: send to notification services
             // actually, they might be registered to this event..
@@ -67,7 +61,7 @@ class UserService {
 
         });
 
-        handler.onCommand('USER_PAYMENT_FAILED', (command) => {
+        handler.on('USER_PAYMENT_FAILED', (command) => {
 
         })
 
@@ -75,4 +69,4 @@ class UserService {
 
 }
 
-module.exports = UserService;
+module.exports = ConsumerPayments;
